@@ -94,95 +94,95 @@ func generate(opts options) {
 
 func main() {
 	/*
-	generate(options{
-		Kind:        "deployment",
-		PackageName: "appv1",
-		PackagePath: "k8s.io/api/apps/v1",
-		Type:        "Deployment",
-		ListType:    "DeploymentList",
-		Group:       "AppsV1",
-		Resource:    "Deployments",
-	})
-	generate(options{
-		Kind:        "statefulset",
-		PackageName: "appv1",
-		PackagePath: "k8s.io/api/apps/v1",
-		Type:        "StatefulSet",
-		ListType:    "StatefulSetList",
-		Group:       "AppsV1",
-		Resource:    "StatefulSets",
-	})
-	generate(options{
-		Kind:        "daemonset",
-		PackageName: "appv1",
-		PackagePath: "k8s.io/api/apps/v1",
-		Type:        "DaemonSet",
-		ListType:    "DaemonSetList",
-		Group:       "AppsV1",
-		Resource:    "DaemonSets",
-	})
-	generate(options{
-		Kind:        "service",
-		PackageName: "corev1",
-		PackagePath: "k8s.io/api/core/v1",
-		Type:        "Service",
-		ListType:    "ServiceList",
-		Group:       "CoreV1",
-		Resource:    "Services",
-	})
-	generate(options{
-		Kind:        "service",
-		PackageName: "corev1",
-		PackagePath: "k8s.io/api/core/v1",
-		Type:        "Service",
-		ListType:    "ServiceList",
-		Group:       "CoreV1",
-		Resource:    "Services",
-	})
-	generate(options{
-		Kind:        "secret",
-		PackageName: "corev1",
-		PackagePath: "k8s.io/api/core/v1",
-		Type:        "Secret",
-		ListType:    "SecretList",
-		Group:       "CoreV1",
-		Resource:    "Secrets",
-	})
-	generate(options{
-		Kind:        "configmap",
-		PackageName: "corev1",
-		PackagePath: "k8s.io/api/core/v1",
-		Type:        "ConfigMap",
-		ListType:    "ConfigMapList",
-		Group:       "CoreV1",
-		Resource:    "ConfigMaps",
-	})
-	generate(options{
-		Kind:        "ingress",
-		PackageName: "extensionsv1beta1",
-		PackagePath: "k8s.io/api/extensions/v1beta1",
-		Type:        "Ingress",
-		ListType:    "IngressList",
-		Group:       "ExtensionsV1beta1",
-		Resource:    "Ingresses",
-	})
-	generate(options{
-			Kind:        "hpa",
-			PackageName: "autoscalingv2beta2",
-			PackagePath: "k8s.io/api/autoscaling/v2beta2",
-			Type:        "HorizontalPodAutoscaler",
-			ListType:    "HorizontalPodAutoscalerList",
-			Group:       "AutoscalingV2beta2",
-			Resource:    "HorizontalPodAutoscalers",
-	})
-	 */
-	generate(options{
-		Kind:        "pvc",
-		PackageName: "corev1",
-		PackagePath: "k8s.io/api/core/v1",
-		Type:        "PersistentVolumeClaim",
-		ListType:    "PersistentVolumeClaimList",
-		Group:       "CoreV1",
-		Resource:    "PersistentVolumeClaims",
-	})
+		generate(options{
+			Kind:        "deployment",
+			PackageName: "appv1",
+			PackagePath: "k8s.io/api/apps/v1",
+			Type:        "Deployment",
+			ListType:    "DeploymentList",
+			Group:       "AppsV1",
+			Resource:    "Deployments",
+		})
+		generate(options{
+			Kind:        "statefulset",
+			PackageName: "appv1",
+			PackagePath: "k8s.io/api/apps/v1",
+			Type:        "StatefulSet",
+			ListType:    "StatefulSetList",
+			Group:       "AppsV1",
+			Resource:    "StatefulSets",
+		})
+		generate(options{
+			Kind:        "daemonset",
+			PackageName: "appv1",
+			PackagePath: "k8s.io/api/apps/v1",
+			Type:        "DaemonSet",
+			ListType:    "DaemonSetList",
+			Group:       "AppsV1",
+			Resource:    "DaemonSets",
+		})
+		generate(options{
+			Kind:        "service",
+			PackageName: "corev1",
+			PackagePath: "k8s.io/api/core/v1",
+			Type:        "Service",
+			ListType:    "ServiceList",
+			Group:       "CoreV1",
+			Resource:    "Services",
+		})
+		generate(options{
+			Kind:        "service",
+			PackageName: "corev1",
+			PackagePath: "k8s.io/api/core/v1",
+			Type:        "Service",
+			ListType:    "ServiceList",
+			Group:       "CoreV1",
+			Resource:    "Services",
+		})
+		generate(options{
+			Kind:        "secret",
+			PackageName: "corev1",
+			PackagePath: "k8s.io/api/core/v1",
+			Type:        "Secret",
+			ListType:    "SecretList",
+			Group:       "CoreV1",
+			Resource:    "Secrets",
+		})
+		generate(options{
+			Kind:        "configmap",
+			PackageName: "corev1",
+			PackagePath: "k8s.io/api/core/v1",
+			Type:        "ConfigMap",
+			ListType:    "ConfigMapList",
+			Group:       "CoreV1",
+			Resource:    "ConfigMaps",
+		})
+		generate(options{
+			Kind:        "ingress",
+			PackageName: "extensionsv1beta1",
+			PackagePath: "k8s.io/api/extensions/v1beta1",
+			Type:        "Ingress",
+			ListType:    "IngressList",
+			Group:       "ExtensionsV1beta1",
+			Resource:    "Ingresses",
+		})
+		generate(options{
+				Kind:        "hpa",
+				PackageName: "autoscalingv2beta2",
+				PackagePath: "k8s.io/api/autoscaling/v2beta2",
+				Type:        "HorizontalPodAutoscaler",
+				ListType:    "HorizontalPodAutoscalerList",
+				Group:       "AutoscalingV2beta2",
+				Resource:    "HorizontalPodAutoscalers",
+		})
+		generate(options{
+			Kind:        "pvc",
+			PackageName: "corev1",
+			PackagePath: "k8s.io/api/core/v1",
+			Type:        "PersistentVolumeClaim",
+			ListType:    "PersistentVolumeClaimList",
+			Group:       "CoreV1",
+			Resource:    "PersistentVolumeClaims",
+		})
+	*/
 }
