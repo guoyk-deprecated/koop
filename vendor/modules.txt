@@ -2,6 +2,9 @@
 github.com/cpuguy83/go-md2man/v2/md2man
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
+# github.com/evanphx/json-patch v4.9.0+incompatible
+## explicit
+github.com/evanphx/json-patch
 # github.com/gogo/protobuf v1.3.1
 github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/sortkeys
