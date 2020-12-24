@@ -14,11 +14,15 @@ Put kubeconfig files at `$HOME/.koops/cluster-[CLUSTER-NAME].yaml`
 koop pull [CLUSTER-NAME] [NAMESPACE] [KIND] [NAME]
 ```
 
+Use `-` for wildcard matching
+
 **Push Resource**
 
 ```shell
 koops push [CLUSTER-NAME] [NAMESPACE] [KIND] [NAME]
 ```
+
+Use `-` for wildcard matching
 
 ## Credits
 

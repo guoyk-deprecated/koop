@@ -28,7 +28,7 @@ var (
 )
 
 const (
-	wildcard     = "*"
+	wildcard     = "-"
 	configDir    = ".koop"
 	configPrefix = "cluster-"
 	configSuffix = ".yaml"
