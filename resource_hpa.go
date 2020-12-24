@@ -6,7 +6,6 @@ import (
 	autoscalingv2beta2 "k8s.io/api/autoscaling/v2beta2"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -32,14 +31,14 @@ func init() {
 			return
 		},
 		SetJSON: func(ctx context.Context, client *kubernetes.Clientset, namespace, name string, data []byte) (err error) {
-			if _, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Patch(ctx, name, types.StrategicMergePatchType, data, metav1.PatchOptions{}); err != nil {
+			var obj autoscalingv2beta2.HorizontalPodAutoscaler
+			if err = json.Unmarshal(data, &obj); err != nil {
+				return
+			}
+			obj.Namespace = namespace
+			obj.Name = name
+			if _, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
-					var obj autoscalingv2beta2.HorizontalPodAutoscaler
-					if err = json.Unmarshal(data, &obj); err != nil {
-						return
-					}
-					obj.Namespace = namespace
-					obj.Name = name
 					if _, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {
 						return
 					}

@@ -6,7 +6,6 @@ import (
 	extensionsv1beta1 "k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -32,14 +31,14 @@ func init() {
 			return
 		},
 		SetJSON: func(ctx context.Context, client *kubernetes.Clientset, namespace, name string, data []byte) (err error) {
-			if _, err = client.ExtensionsV1beta1().Ingresses(namespace).Patch(ctx, name, types.StrategicMergePatchType, data, metav1.PatchOptions{}); err != nil {
+			var obj extensionsv1beta1.Ingress
+			if err = json.Unmarshal(data, &obj); err != nil {
+				return
+			}
+			obj.Namespace = namespace
+			obj.Name = name
+			if _, err = client.ExtensionsV1beta1().Ingresses(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
-					var obj extensionsv1beta1.Ingress
-					if err = json.Unmarshal(data, &obj); err != nil {
-						return
-					}
-					obj.Namespace = namespace
-					obj.Name = name
 					if _, err = client.ExtensionsV1beta1().Ingresses(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {
 						return
 					}

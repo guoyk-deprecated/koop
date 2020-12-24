@@ -45,7 +45,7 @@ func (ps PatchSet) Apply(data []byte) (out []byte, err error) {
 }
 
 var (
-	defaultPatchSet = PatchSet{
+	defaultSanitizers = PatchSet{
 		{{Op: OpRemove, Path: "/status"}},
 		{{Op: OpRemove, Path: "/kind"}},
 		{{Op: OpRemove, Path: "/apiVersion"}},
@@ -53,14 +53,13 @@ var (
 		{{Op: OpRemove, Path: "/metadata/namespace"}},
 		{{Op: OpRemove, Path: "/metadata/creationTimestamp"}},
 		{{Op: OpRemove, Path: "/metadata/generation"}},
-		{{Op: OpRemove, Path: "/metadata/resourceVersion"}},
 		{{Op: OpRemove, Path: "/metadata/selfLink"}},
 		{{Op: OpRemove, Path: "/metadata/uid"}},
 		{{Op: OpRemove, Path: "/metadata/managedFields"}},
 		{{Op: OpRemove, Path: "/metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration"}},
 		{{Op: OpRemove, Path: "/metadata/annotations/deployment.kubernetes.io~1revision"}},
 		{{Op: OpRemove, Path: "/metadata/annotations/field.cattle.io~1ingressState"}},
-		{{Op: OpRemove, Path: "/metadata/annotations/field.cattle.io~publicEndpoints"}},
+		{{Op: OpRemove, Path: "/metadata/annotations/field.cattle.io~1publicEndpoints"}},
 		{{Op: OpRemove, Path: "/spec/template/metadata/creationTimestamp"}},
 		{{Op: OpRemove, Path: "/spec/replicas"}},
 	}
