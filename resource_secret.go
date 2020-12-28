@@ -48,6 +48,7 @@ func init() {
 			obj.Name = name
 			if _, err = client.CoreV1().Secrets(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
+					obj.ResourceVersion = ""
 					if _, err = client.CoreV1().Secrets(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {
 						return
 					}

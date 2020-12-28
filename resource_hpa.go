@@ -39,6 +39,7 @@ func init() {
 			obj.Name = name
 			if _, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
+					obj.ResourceVersion = ""
 					if _, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {
 						return
 					}

@@ -39,6 +39,7 @@ func init() {
 			obj.Name = name
 			if _, err = client.AppsV1().DaemonSets(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
+					obj.ResourceVersion = ""
 					if _, err = client.AppsV1().DaemonSets(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {
 						return
 					}

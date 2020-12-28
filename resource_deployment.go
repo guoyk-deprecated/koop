@@ -44,6 +44,7 @@ func init() {
 
 			if _, err = client.AppsV1().Deployments(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
+					obj.ResourceVersion = ""
 					if _, err = client.AppsV1().Deployments(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {
 						return
 					}
