@@ -141,6 +141,9 @@ func commandPush(ctx context.Context, cluster string, namespace string, kind str
 				if name == wildcard {
 					var infos []os.FileInfo
 					if infos, err = ioutil.ReadDir(dir); err != nil {
+						if os.IsNotExist(err) {
+							err = nil
+						}
 						return
 					}
 					for _, info := range infos {
