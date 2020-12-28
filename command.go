@@ -25,6 +25,7 @@ var (
 		"ingress-nginx",
 		"nfs-client-provisioner",
 		"security-scan",
+		"nfs-provisioner",
 	}
 )
 
