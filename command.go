@@ -186,17 +186,20 @@ func commandPull(ctx context.Context, cluster string, namespace string, kind str
 				}
 
 				dir := filepath.Join(cluster, namespace, kind)
-				if err = os.MkdirAll(dir, 0755); err != nil {
-					return
-				}
 
 				var names []string
 				if name == wildcard {
+					_ = os.RemoveAll(dir)
+					log.Printf("CLEAN: %s/%s/%s", cluster, namespace, kind)
 					if names, err = resource.List(ctx, client, namespace); err != nil {
 						return
 					}
 				} else {
 					names = []string{name}
+				}
+
+				if err = os.MkdirAll(dir, 0755); err != nil {
+					return
 				}
 
 				for _, name := range names {
