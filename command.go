@@ -30,7 +30,9 @@ var (
 )
 
 const (
-	wildcard     = "-"
+	nameAny      = "-"
+	nameWildcard = "*"
+
 	configDir    = ".koop"
 	configPrefix = "cluster-"
 	configSuffix = ".yaml"
@@ -38,7 +40,7 @@ const (
 
 func iterateCluster(cluster string, fn func(cluster string, client *kubernetes.Clientset) error) (err error) {
 	var clusters []string
-	if cluster == wildcard {
+	if cluster == nameAny {
 		var home string
 		if home, err = os.UserHomeDir(); err != nil {
 			return
@@ -85,7 +87,7 @@ func iterateCluster(cluster string, fn func(cluster string, client *kubernetes.C
 
 func iterateNamespace(ctx context.Context, client *kubernetes.Clientset, namespace string, fn func(namespace string) error) (err error) {
 	var namespaces []string
-	if namespace == wildcard {
+	if namespace == nameAny || strings.HasSuffix(namespace, nameWildcard) {
 		var items *corev1.NamespaceList
 		if items, err = client.CoreV1().Namespaces().List(ctx, metav1.ListOptions{}); err != nil {
 			return
@@ -97,7 +99,10 @@ func iterateNamespace(ctx context.Context, client *kubernetes.Clientset, namespa
 					continue outerLoop
 				}
 			}
-			namespaces = append(namespaces, item.Name)
+
+			if namespace == nameAny || strings.HasPrefix(item.Name, strings.TrimSuffix(namespace, nameWildcard)) {
+				namespaces = append(namespaces, item.Name)
+			}
 		}
 	} else {
 		if _, err = client.CoreV1().Namespaces().Get(ctx, namespace, metav1.GetOptions{}); err != nil {
@@ -115,7 +120,7 @@ func iterateNamespace(ctx context.Context, client *kubernetes.Clientset, namespa
 
 func iterateKind(kind string, fn func(kind string) error) (err error) {
 	var kinds []string
-	if kind == wildcard {
+	if kind == nameAny {
 		kinds = knownResourceNames
 	} else {
 		kinds = []string{kind}
@@ -138,7 +143,7 @@ func commandPush(ctx context.Context, cluster string, namespace string, kind str
 				}
 				dir := filepath.Join(cluster, namespace, kind)
 				var names []string
-				if name == wildcard {
+				if name == nameAny {
 					var infos []os.FileInfo
 					if infos, err = ioutil.ReadDir(dir); err != nil {
 						if os.IsNotExist(err) {
@@ -191,7 +196,7 @@ func commandPull(ctx context.Context, cluster string, namespace string, kind str
 				dir := filepath.Join(cluster, namespace, kind)
 
 				var names []string
-				if name == wildcard {
+				if name == nameAny {
 					_ = os.RemoveAll(dir)
 					log.Printf("CLEAN: %s/%s/%s", cluster, namespace, kind)
 					if names, err = resource.List(ctx, client, namespace); err != nil {
