@@ -37,6 +37,11 @@ func init() {
 			}
 			obj.Namespace = namespace
 			obj.Name = name
+
+			if current, _ := client.ExtensionsV1beta1().Ingresses(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+				obj.ResourceVersion = current.ResourceVersion
+			}
+
 			if _, err = client.ExtensionsV1beta1().Ingresses(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
 					obj.ResourceVersion = ""

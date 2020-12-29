@@ -37,6 +37,11 @@ func init() {
 			}
 			obj.Namespace = namespace
 			obj.Name = name
+
+			if current, _ := client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+				obj.ResourceVersion = current.ResourceVersion
+			}
+
 			if _, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
 					obj.ResourceVersion = ""

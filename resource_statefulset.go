@@ -39,6 +39,7 @@ func init() {
 			obj.Name = name
 
 			if current, _ := client.AppsV1().StatefulSets(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+				obj.ResourceVersion = current.ResourceVersion
 				obj.Spec.Replicas = current.Spec.Replicas
 			}
 
