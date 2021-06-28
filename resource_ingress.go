@@ -7,6 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	"log"
 )
 
 func init() {
@@ -38,8 +39,16 @@ func init() {
 			obj.Namespace = namespace
 			obj.Name = name
 
-			if current, _ := client.ExtensionsV1beta1().Ingresses(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+			var current *extensionsv1beta1.Ingress
+			if current, err = client.ExtensionsV1beta1().Ingresses(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
+				if errors.IsNotFound(err) {
+					err = nil
+				} else {
+					return
+				}
+			} else {
 				if IsEnvNoUpdate() {
+					log.Println("SKIP")
 					return
 				}
 				obj.ResourceVersion = current.ResourceVersion

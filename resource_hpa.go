@@ -7,6 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	"log"
 )
 
 func init() {
@@ -38,8 +39,16 @@ func init() {
 			obj.Namespace = namespace
 			obj.Name = name
 
-			if current, _ := client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+			var current *autoscalingv2beta2.HorizontalPodAutoscaler
+			if current, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
+				if errors.IsNotFound(err) {
+					err = nil
+				} else {
+					return
+				}
+			} else {
 				if IsEnvNoUpdate() {
+					log.Println("SKIP")
 					return
 				}
 				obj.ResourceVersion = current.ResourceVersion
