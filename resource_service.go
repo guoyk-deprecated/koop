@@ -39,6 +39,9 @@ func init() {
 			obj.Name = name
 
 			if current, _ := client.CoreV1().Services(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+				if IsEnvNoUpdate() {
+					return
+				}
 				obj.ResourceVersion = current.ResourceVersion
 			}
 

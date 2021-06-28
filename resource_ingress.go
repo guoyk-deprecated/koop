@@ -39,6 +39,9 @@ func init() {
 			obj.Name = name
 
 			if current, _ := client.ExtensionsV1beta1().Ingresses(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+				if IsEnvNoUpdate() {
+					return
+				}
 				obj.ResourceVersion = current.ResourceVersion
 			}
 

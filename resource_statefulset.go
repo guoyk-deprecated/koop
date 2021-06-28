@@ -39,6 +39,9 @@ func init() {
 			obj.Name = name
 
 			if current, _ := client.AppsV1().StatefulSets(namespace).Get(ctx, name, metav1.GetOptions{}); current != nil {
+				if IsEnvNoUpdate() {
+					return
+				}
 				obj.ResourceVersion = current.ResourceVersion
 				obj.Spec.Replicas = current.Spec.Replicas
 			}
@@ -46,6 +49,9 @@ func init() {
 			if _, err = client.AppsV1().StatefulSets(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
 					obj.ResourceVersion = ""
+					if IsEnvZeroReplicas() {
+						obj.Spec.Replicas = &int32Zero
+					}
 					if _, err = client.AppsV1().StatefulSets(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {
 						return
 					}
