@@ -10,6 +10,11 @@ import (
 	"log"
 )
 
+const (
+	keyDefault    = "default"
+	keyKubernetes = "kubernetes"
+)
+
 func init() {
 	knownResources = append(knownResources, &Resource{
 		Kind: "service",
@@ -24,6 +29,9 @@ func init() {
 			return
 		},
 		GetJSON: func(ctx context.Context, client *kubernetes.Clientset, namespace, name string) (data []byte, err error) {
+			if namespace == keyDefault && name == keyKubernetes {
+				return
+			}
 			var obj *corev1.Service
 			if obj, err = client.CoreV1().Services(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
@@ -32,6 +40,10 @@ func init() {
 			return
 		},
 		SetJSON: func(ctx context.Context, client *kubernetes.Clientset, namespace, name string, data []byte) (err error) {
+			if namespace == keyDefault && name == keyKubernetes {
+				return
+			}
+
 			var obj corev1.Service
 			if err = json.Unmarshal(data, &obj); err != nil {
 				return

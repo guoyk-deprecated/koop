@@ -18,6 +18,9 @@ func (r Resource) GetCanonicalYAML(ctx context.Context, client *kubernetes.Clien
 	if data, err = r.GetJSON(ctx, client, namespace, name); err != nil {
 		return
 	}
+	if len(data) == 0 {
+		return
+	}
 	if data, err = defaultSanitizers.Apply(data); err != nil {
 		return
 	}

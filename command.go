@@ -20,12 +20,15 @@ var (
 		"cattle-system",
 		"kube-system",
 		"kube-public",
+		"kube-ingress",
+		"kube-storage",
 		"kube-node-lease",
 		"nginx-ingress",
 		"ingress-nginx",
 		"nfs-client-provisioner",
 		"security-scan",
 		"nfs-provisioner",
+		"autoops",
 	}
 )
 
@@ -215,6 +218,9 @@ func commandPull(ctx context.Context, cluster string, namespace string, kind str
 					var buf []byte
 					if buf, err = resource.GetCanonicalYAML(ctx, client, namespace, name); err != nil {
 						return
+					}
+					if len(buf) == 0 {
+						continue
 					}
 					if err = ioutil.WriteFile(filepath.Join(dir, name+".yaml"), buf, 0755); err != nil {
 						return
