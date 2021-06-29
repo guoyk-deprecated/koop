@@ -29,6 +29,7 @@ var (
 		"security-scan",
 		"nfs-provisioner",
 		"autoops",
+		"istio-system",
 	}
 )
 
