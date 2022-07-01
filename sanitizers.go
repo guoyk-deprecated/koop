@@ -64,4 +64,7 @@ var (
 		{{Op: OpRemove, Path: "/spec/template/metadata/creationTimestamp"}},
 		{{Op: OpRemove, Path: "/spec/replicas"}},
 	}
+	noResourceVersionSanitizers = PatchSet{
+		{{Op: OpRemove, Path: "/metadata/resourceVersion"}},
+	}
 )

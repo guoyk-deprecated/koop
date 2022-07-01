@@ -47,7 +47,7 @@ func init() {
 					return
 				}
 			} else {
-				if IsEnvNoUpdate() {
+				if GateNoUpdate.IsOn() {
 					log.Println("SKIP")
 					return
 				}
@@ -58,7 +58,7 @@ func init() {
 			if _, err = client.AppsV1().Deployments(namespace).Update(ctx, &obj, metav1.UpdateOptions{}); err != nil {
 				if errors.IsNotFound(err) {
 					obj.ResourceVersion = ""
-					if IsEnvZeroReplicas() {
+					if GateZeroReplicas.IsOn() {
 						obj.Spec.Replicas = &int32Zero
 					}
 					if _, err = client.AppsV1().Deployments(namespace).Create(ctx, &obj, metav1.CreateOptions{}); err != nil {

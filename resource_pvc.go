@@ -37,6 +37,7 @@ func init() {
 				obj.Spec.VolumeName = ""
 				obj.Spec.VolumeMode = nil
 				obj.Annotations = nil
+				obj.ResourceVersion = ""
 			}
 			data, err = json.Marshal(obj)
 			return
@@ -57,7 +58,7 @@ func init() {
 					return
 				}
 			} else {
-				if IsEnvNoUpdate() {
+				if GateNoUpdate.IsOn() {
 					log.Println("SKIP")
 					return
 				}

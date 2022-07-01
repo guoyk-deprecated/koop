@@ -26,16 +26,3 @@ func YAML2JSON(buf []byte) (out []byte, err error) {
 	out, err = json.Marshal(m)
 	return
 }
-
-var (
-	isNoUpdate     bool
-	isZeroReplicas bool
-)
-
-func IsEnvNoUpdate() bool {
-	return isNoUpdate
-}
-
-func IsEnvZeroReplicas() bool {
-	return isZeroReplicas
-}

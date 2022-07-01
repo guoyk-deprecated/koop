@@ -21,28 +21,16 @@ func main() {
 	defer exit(&err)
 
 	app := cli.NewApp()
-	app.Flags = []cli.Flag{
-		&cli.BoolFlag{
-			Name:    "no-update",
-			Usage:   "no update if already existed",
-			EnvVars: []string{"KOOP_NO_UPDATE"},
-		},
-		&cli.BoolFlag{
-			Name:    "zero-replicas",
-			Usage:   "create workloads with zero replicas",
-			EnvVars: []string{"KOOP_ZERO_REPLICAS"},
-		},
-	}
+	SetUpCLIGates(app)
 	app.Usage = "file based kubernetes operation tool"
 	app.Commands = append(app.Commands, &cli.Command{
 		Name:        "pull",
 		Description: "pull resources from existing cluster",
 		Action: func(c *cli.Context) error {
+			ExtractCLIGates(c)
 			if c.NArg() != 4 {
 				return errors.New("invalid number of arguments")
 			}
-			isNoUpdate = c.Bool("no-update")
-			isZeroReplicas = c.Bool("zero-replicas")
 			return commandPull(c.Context, c.Args().Get(0), c.Args().Get(1), c.Args().Get(2), c.Args().Get(3))
 		},
 	})
@@ -53,8 +41,7 @@ func main() {
 			if c.NArg() != 4 {
 				return errors.New("invalid number of arguments")
 			}
-			isNoUpdate = c.Bool("no-update")
-			isZeroReplicas = c.Bool("zero-replicas")
+			ExtractCLIGates(c)
 			return commandPush(c.Context, c.Args().Get(0), c.Args().Get(1), c.Args().Get(2), c.Args().Get(3))
 		},
 	})

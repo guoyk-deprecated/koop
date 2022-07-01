@@ -62,7 +62,7 @@ func init() {
 					return
 				}
 			} else {
-				if IsEnvNoUpdate() {
+				if GateNoUpdate.IsOn() {
 					log.Println("SKIP")
 					return
 				}

@@ -24,6 +24,11 @@ func (r Resource) GetCanonicalYAML(ctx context.Context, client *kubernetes.Clien
 	if data, err = defaultSanitizers.Apply(data); err != nil {
 		return
 	}
+	if GateNoResourceVersion.IsOn() {
+		if data, err = noResourceVersionSanitizers.Apply(data); err != nil {
+			return
+		}
+	}
 	data, err = JSON2YAML(data)
 	return
 }
@@ -34,6 +39,11 @@ func (r Resource) SetCanonicalYAML(ctx context.Context, client *kubernetes.Clien
 	}
 	if data, err = defaultSanitizers.Apply(data); err != nil {
 		return
+	}
+	if GateNoResourceVersion.IsOn() {
+		if data, err = noResourceVersionSanitizers.Apply(data); err != nil {
+			return
+		}
 	}
 	if err = r.SetJSON(ctx, client, namespace, name, data); err != nil {
 		return
