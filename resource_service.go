@@ -24,6 +24,9 @@ func init() {
 				return
 			}
 			for _, item := range items.Items {
+				if len(item.OwnerReferences) != 0 {
+					continue
+				}
 				names = append(names, item.Name)
 			}
 			return
