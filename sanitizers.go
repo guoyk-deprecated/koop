@@ -56,6 +56,7 @@ var (
 		{{Op: OpRemove, Path: "/metadata/selfLink"}},
 		{{Op: OpRemove, Path: "/metadata/uid"}},
 		{{Op: OpRemove, Path: "/metadata/managedFields"}},
+		{{Op: OpRemove, Path: "/metadata/finalizers"}},
 		{{Op: OpRemove, Path: "/metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration"}},
 		{{Op: OpRemove, Path: "/metadata/annotations/deployment.kubernetes.io~1revision"}},
 		{{Op: OpRemove, Path: "/metadata/annotations/field.cattle.io~1ingressState"}},

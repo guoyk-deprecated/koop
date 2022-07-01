@@ -8,6 +8,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"log"
+	"regexp"
+)
+
+var (
+	regexpPVCUUID = regexp.MustCompile(`^pvc-[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$`)
 )
 
 func init() {
@@ -27,6 +32,11 @@ func init() {
 			var obj *corev1.PersistentVolumeClaim
 			if obj, err = client.CoreV1().PersistentVolumeClaims(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
+			}
+			if regexpPVCUUID.MatchString(obj.Spec.VolumeName) {
+				obj.Spec.VolumeName = ""
+				obj.Spec.VolumeMode = nil
+				obj.Annotations = nil
 			}
 			data, err = json.Marshal(obj)
 			return
