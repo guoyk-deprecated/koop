@@ -210,6 +210,10 @@ func commandPull(ctx context.Context, cluster string, namespace string, kind str
 					names = []string{name}
 				}
 
+				if len(names) == 0 {
+					return
+				}
+
 				if err = os.MkdirAll(dir, 0755); err != nil {
 					return
 				}
