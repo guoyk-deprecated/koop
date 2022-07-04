@@ -1,4 +1,4 @@
-module github.com/k8s-autoops/koop
+module go.guoyk.net/koop
 
 go 1.18
 
