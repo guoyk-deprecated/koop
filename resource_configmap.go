@@ -8,6 +8,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"log"
+	"strings"
+)
+
+var (
+	ignoredConfigMapPrefixes = []string{
+		"kube-root-ca",
+	}
 )
 
 func init() {
@@ -18,7 +25,13 @@ func init() {
 			if items, err = client.CoreV1().ConfigMaps(namespace).List(ctx, metav1.ListOptions{}); err != nil {
 				return
 			}
+		outerLoop:
 			for _, item := range items.Items {
+				for _, ignored := range ignoredConfigMapPrefixes {
+					if strings.HasPrefix(item.Name, ignored) {
+						continue outerLoop
+					}
+				}
 				names = append(names, item.Name)
 			}
 			return
