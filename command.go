@@ -16,8 +16,11 @@ import (
 
 var (
 	ignoredNamespaces = []string{
-		"cattle-prometheus",
-		"cattle-system",
+		"argocd",
+		"fleet-",
+		"rancher-",
+		"cert-manager",
+		"cattle-",
 		"kube-system",
 		"kube-public",
 		"kube-ingress",
