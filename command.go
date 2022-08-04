@@ -33,6 +33,9 @@ var (
 		"nfs-provisioner",
 		"autoops",
 		"istio-system",
+		"p-",
+		"u-",
+		"user-",
 	}
 )
 
