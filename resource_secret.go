@@ -9,6 +9,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"log"
 	"strconv"
+	"strings"
 )
 
 func init() {
@@ -22,6 +23,15 @@ func init() {
 			for _, item := range items.Items {
 				// ignore service account token
 				if item.Type == corev1.SecretTypeServiceAccountToken {
+					continue
+				}
+				if strings.Contains(string(item.Type), "helm.sh") {
+					continue
+				}
+				if strings.HasPrefix(item.Name, "ezopsdb") {
+					continue
+				}
+				if strings.HasPrefix(item.Name, "gopsdb") {
 					continue
 				}
 				// ignore replicated secret
