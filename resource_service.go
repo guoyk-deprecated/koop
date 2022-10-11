@@ -8,6 +8,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"log"
+	"strings"
 )
 
 const (
@@ -24,9 +25,6 @@ func init() {
 				return
 			}
 			for _, item := range items.Items {
-				if len(item.OwnerReferences) != 0 {
-					continue
-				}
 				names = append(names, item.Name)
 			}
 			return
@@ -39,6 +37,15 @@ func init() {
 			if obj, err = client.CoreV1().Services(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
 			}
+			FixRancherService(
+				strings.TrimSuffix(
+					strings.TrimSuffix(name, "-nodeport"),
+					"-loadbalancer",
+				),
+				&obj.Spec,
+			)
+			obj.Kind = "Service"
+			obj.APIVersion = "v1"
 			data, err = json.Marshal(obj)
 			return
 		},

@@ -28,6 +28,8 @@ func init() {
 			if obj, err = client.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
 			}
+			obj.Kind = "HorizontalPodAutoscaler"
+			obj.APIVersion = "autoscaling/v2beta2"
 			data, err = json.Marshal(obj)
 			return
 		},

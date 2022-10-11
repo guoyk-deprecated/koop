@@ -41,6 +41,8 @@ func init() {
 			if obj, err = client.CoreV1().ConfigMaps(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
 			}
+			obj.Kind = "ConfigMap"
+			obj.APIVersion = "v1"
 			data, err = json.Marshal(obj)
 			return
 		},

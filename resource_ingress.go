@@ -28,6 +28,8 @@ func init() {
 			if obj, err = client.NetworkingV1beta1().Ingresses(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
 			}
+			obj.Kind = "Ingress"
+			obj.APIVersion = "networking/v1beta1"
 			data, err = json.Marshal(obj)
 			return
 		},

@@ -28,6 +28,10 @@ func init() {
 			if obj, err = client.AppsV1().StatefulSets(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
 			}
+			FixRancherWorkloadSelector(name, obj.Spec.Selector)
+			FixRancherWorkloadPodTemplate(name, &obj.Spec.Template)
+			obj.Kind = "StatefulSet"
+			obj.APIVersion = "apps/v1"
 			data, err = json.Marshal(obj)
 			return
 		},

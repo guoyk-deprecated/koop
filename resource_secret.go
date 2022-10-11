@@ -47,6 +47,8 @@ func init() {
 			if obj, err = client.CoreV1().Secrets(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
 			}
+			obj.Kind = "Secret"
+			obj.APIVersion = "v1"
 			data, err = json.Marshal(obj)
 			return
 		},

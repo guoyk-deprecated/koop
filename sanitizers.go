@@ -5,6 +5,56 @@ import (
 	jsonpatch "github.com/evanphx/json-patch"
 )
 
+var (
+	removesDefault = []string{
+		"/metadata/annotations/analysis.crane.io~1replicas-recommendation",
+		"/metadata/annotations/analysis.crane.io~1resource-recommendation",
+		"/metadata/annotations/net.guoyk.autodown~1lease",
+		"/metadata/annotations/deployment.kubernetes.io~1revision",
+		"/metadata/annotations/field.cattle.io~1creatorId",
+		"/metadata/annotations/field.cattle.io~1ingressState",
+		"/metadata/annotations/field.cattle.io~1publicEndpoints",
+		"/metadata/annotations/field.cattle.io~1targetWorkloadIds",
+		"/metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration",
+		"/metadata/annotations/workload.cattle.io~1targetWorkloadIdNoop",
+		"/metadata/annotations/workload.cattle.io~1workloadPortBased",
+		"/metadata/creationTimestamp",
+		"/metadata/finalizers",
+		"/metadata/namespace",
+		"/metadata/generation",
+		"/metadata/labels/cattle.io~1creator",
+		"/metadata/labels/workload.user.cattle.io~1workloadselector",
+		"/metadata/managedFields",
+		"/metadata/ownerReferences",
+		"/metadata/selfLink",
+		"/metadata/uid",
+		"/spec/replicas",
+		"/spec/clusterIP",
+		"/spec/clusterIPs",
+		"/spec/template/metadata/annotations/cattle.io~1timestamp",
+		"/spec/template/metadata/annotations/field.cattle.io~1ports",
+		"/spec/template/metadata/annotations/net.guoyk.deployer~1timestamp",
+		"/spec/template/metadata/annotations/workload.cattle.io~1state",
+		"/spec/template/metadata/creationTimestamp",
+		"/status",
+	}
+)
+
+var (
+	sanitizersDefault           = PatchSet{}
+	sanitizersNoResourceVersion = PatchSet{
+		{{Op: OpRemove, Path: "/metadata/resourceVersion"}},
+	}
+)
+
+func init() {
+	for _, remove := range removesDefault {
+		sanitizersDefault = append(sanitizersDefault, Patches{
+			Patch{Op: OpRemove, Path: remove},
+		})
+	}
+}
+
 const (
 	OpAdd     = "add"
 	OpRemove  = "remove"
@@ -43,28 +93,3 @@ func (ps PatchSet) Apply(data []byte) (out []byte, err error) {
 	err = nil
 	return
 }
-
-var (
-	defaultSanitizers = PatchSet{
-		{{Op: OpRemove, Path: "/status"}},
-		{{Op: OpRemove, Path: "/kind"}},
-		{{Op: OpRemove, Path: "/apiVersion"}},
-		{{Op: OpRemove, Path: "/metadata/name"}},
-		{{Op: OpRemove, Path: "/metadata/namespace"}},
-		{{Op: OpRemove, Path: "/metadata/creationTimestamp"}},
-		{{Op: OpRemove, Path: "/metadata/generation"}},
-		{{Op: OpRemove, Path: "/metadata/selfLink"}},
-		{{Op: OpRemove, Path: "/metadata/uid"}},
-		{{Op: OpRemove, Path: "/metadata/managedFields"}},
-		{{Op: OpRemove, Path: "/metadata/finalizers"}},
-		{{Op: OpRemove, Path: "/metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration"}},
-		{{Op: OpRemove, Path: "/metadata/annotations/deployment.kubernetes.io~1revision"}},
-		{{Op: OpRemove, Path: "/metadata/annotations/field.cattle.io~1ingressState"}},
-		{{Op: OpRemove, Path: "/metadata/annotations/field.cattle.io~1publicEndpoints"}},
-		{{Op: OpRemove, Path: "/spec/template/metadata/creationTimestamp"}},
-		{{Op: OpRemove, Path: "/spec/replicas"}},
-	}
-	noResourceVersionSanitizers = PatchSet{
-		{{Op: OpRemove, Path: "/metadata/resourceVersion"}},
-	}
-)

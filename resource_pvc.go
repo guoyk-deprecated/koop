@@ -33,6 +33,8 @@ func init() {
 			if obj, err = client.CoreV1().PersistentVolumeClaims(namespace).Get(ctx, name, metav1.GetOptions{}); err != nil {
 				return
 			}
+			obj.Kind = "PersistentVolumeClaim"
+			obj.APIVersion = "v1"
 			if regexpPVCUUID.MatchString(obj.Spec.VolumeName) {
 				obj.Spec.VolumeName = ""
 				obj.Spec.VolumeMode = nil
